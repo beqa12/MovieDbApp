@@ -16,9 +16,9 @@ class MoviesViewModel(private val popularMoviesUseCase: PopularMoviesUseCase) : 
     private var _popularMovies = MutableLiveData<Resource<List<Movie>>>()
     val popularMovies: LiveData<Resource<List<Movie>>> get() = _popularMovies
 
-    init {
-        getPopularMovies(1)
-    }
+    private var _similarMovies = MutableLiveData<Resource<List<Movie>>>()
+    val similarMovies: LiveData<Resource<List<Movie>>> get() = _similarMovies
+
     fun getPopularMovies(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -29,6 +29,19 @@ class MoviesViewModel(private val popularMoviesUseCase: PopularMoviesUseCase) : 
             } catch (e: Exception) {
                 handleError(e, _popularMovies)
             }
+        }
+    }
+
+    fun getSimilarMovies(tvId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                val response = popularMoviesUseCase.execute(page)
+//                withContext(Dispatchers.Main) {
+//                    _popularMovies.value = Resource(Resource.Status.SUCCESS, response, "Success")
+//                }
+//            } catch (e: Exception) {
+//                handleError(e, _popularMovies)
+//            }
         }
     }
 }
