@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MovieDbApp" >
 
         <activity
-            android:name="com.example.moviedbapp.ui.fragments.activity.MainActivity"
+            android:name="com.example.moviedbapp.ui.activities.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
