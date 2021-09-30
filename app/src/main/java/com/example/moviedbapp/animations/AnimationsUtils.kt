@@ -8,6 +8,8 @@ import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import com.example.moviedbapp.gone
+import com.example.moviedbapp.show
 
 object AnimationsUtils {
 
@@ -35,7 +37,7 @@ object AnimationsUtils {
 
             override fun onAnimationEnd(animation: Animator?) {
                 if (decrease) {
-                    backBtn.visibility = View.GONE
+                    backBtn.gone()
                 }
             }
 
@@ -44,7 +46,7 @@ object AnimationsUtils {
 
             override fun onAnimationStart(animation: Animator?) {
                 if (!decrease) {
-                    backBtn.visibility = View.VISIBLE
+                    backBtn.show()
                 }
             }
 

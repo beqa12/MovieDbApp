@@ -81,9 +81,9 @@ class PopularMoviesActivity : AppCompatActivity() {
                 if (dy > 0) {
                     val visibleCount = mLayoutManager.childCount
                     val totalCount = mLayoutManager.itemCount
-                    val pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition()
+                    val firstVisibleItems = mLayoutManager.findFirstVisibleItemPosition()
 
-                    if (!loading && (visibleCount + pastVisibleItems) >= totalCount) {
+                    if (!loading && (visibleCount + firstVisibleItems) >= totalCount) {
                         loading = true
                         page++
                         moviesViewModel.getPopularMovies(page)
