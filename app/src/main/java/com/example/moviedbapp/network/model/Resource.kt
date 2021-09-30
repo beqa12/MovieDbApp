@@ -8,8 +8,11 @@ class Resource<T> (
     val message: String? = null
 ): Serializable {
 
-    enum class Status {
-        SUCCESS, ERROR, UNKNOWN_ERROR, NO_INTERNET
+    sealed class Status {
+        object SUCCESS: Status()
+        object ERROR: Status()
+        object UNKNOWN_ERROR: Status()
+        object NO_INTERNET: Status()
     }
 
 }

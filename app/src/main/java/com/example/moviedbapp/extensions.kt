@@ -22,8 +22,9 @@ fun Context.toast(message: String){
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
-fun AppCompatImageView.load(imageUrl: String, corner: Int = 20){
+fun AppCompatImageView.load(imageUrl: String?, corner: Int){
     Glide.with(this)
+        .asBitmap()
         .load(IMAGE_BASE_URL + imageUrl)
         .transform(RoundedCorners(corner))
         .into(this)

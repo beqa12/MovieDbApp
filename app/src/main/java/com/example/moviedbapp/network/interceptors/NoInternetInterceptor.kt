@@ -23,17 +23,20 @@ class NoInternetInterceptor(private val context: Context): Interceptor {
         val capabilities =
             connectivityManager?.getNetworkCapabilities(connectivityManager.activeNetwork)
         connectivityManager?.let {
-            if (capabilities != null) {
+            capabilities?.let {networkCapabilities ->
                 result = when {
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                         true
                     }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                         true
                     }else -> {
                         false
                     }
                 }
+            }
+            if (capabilities != null) {
+
             }
         }
         return result

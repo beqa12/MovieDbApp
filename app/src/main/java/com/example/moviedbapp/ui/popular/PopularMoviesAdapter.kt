@@ -41,7 +41,7 @@ class PopularMoviesAdapter (private val clickListener: (Movie, View)-> Unit): Re
             itemBinding.popularMovieName.text = movieModel.name
             itemBinding.movieDate.text = movieModel.date
             itemBinding.ratingBar.rating = movieModel.rating!!.toFloat()
-            itemBinding.popularMovieImg.load(movieModel.image!!)
+            itemBinding.popularMovieImg.load(movieModel.image, corner = 20)
             itemBinding.root.setOnClickListener{
                 clickListener(movieModel, itemBinding.popularMovieImg)
             }

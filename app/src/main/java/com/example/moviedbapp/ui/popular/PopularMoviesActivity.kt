@@ -1,20 +1,25 @@
 package com.example.moviedbapp.ui.popular
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviedbapp.R
 import com.example.moviedbapp.animations.AnimationsUtils
 import com.example.moviedbapp.databinding.ActivityMainBinding
 import com.example.moviedbapp.domain.model.Movie
 import com.example.moviedbapp.focusChangeAnimation
 import com.example.moviedbapp.network.model.Resource
+import com.example.moviedbapp.toast
+import com.example.moviedbapp.ui.similar.SimilarMoviesActivity
 import com.example.moviedbapp.utils.KeyboardHelper
+import com.example.moviedbapp.utils.POPULAR_MOVIE_MODEL_KEY
 import com.example.moviedbapp.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,8 +40,13 @@ class PopularMoviesActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun initUI(){
-        popularMoviesAdapter = PopularMoviesAdapter { popularMovieModel, imageView -> popularMovieModelClicked(popularMovieModel, imageView)}
+    private fun initUI() {
+        popularMoviesAdapter = PopularMoviesAdapter { popularMovieModel, imageView ->
+            popularMovieModelClicked(
+                popularMovieModel,
+                imageView
+            )
+        }
         mLayoutManager = LinearLayoutManager(this)
         binding.popularMoviesRecycler.layoutManager = mLayoutManager
         binding.popularMoviesRecycler.adapter = popularMoviesAdapter
@@ -44,11 +54,16 @@ class PopularMoviesActivity : AppCompatActivity() {
         setListeners()
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
         binding.filterEditText.focusChangeAnimation(binding.filterBackBtn)
-        binding.filterBackBtn.setOnClickListener{
-            AnimationsUtils.focusChangeAnimation(binding.filterEditText,binding.filterBackBtn, 400, true)
-            KeyboardHelper.hideKeyboard(this,binding.filterEditText)
+        binding.filterBackBtn.setOnClickListener {
+            AnimationsUtils.focusChangeAnimation(
+                binding.filterEditText,
+                binding.filterBackBtn,
+                400,
+                true
+            )
+            KeyboardHelper.hideKeyboard(this, binding.filterEditText)
         }
         binding.filterEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -73,38 +88,50 @@ class PopularMoviesActivity : AppCompatActivity() {
                     if (!loading && (visibleCount + pastVisibleItems) >= totalCount) {
                         loading = true
                         page++
-                        Log.e("TAG", "Current page is $page")
                         moviesViewModel.getPopularMovies(page)
                     }
                 }
             }
         })
     }
-    private fun setObservers(){
+
+    private fun setObservers() {
         moviesViewModel.popularMovies.observe(this, Observer {
             loading = false
-            when(it.status){
-               Resource.Status.SUCCESS -> {
-                   popularMoviesAdapter.addMovies(it.data!!)
-               }
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    popularMoviesAdapter.addMovies(it.data!!)
+                }
+                Resource.Status.NO_INTERNET -> {
+                    toast(it.message!!)
+                }
+                Resource.Status.UNKNOWN_ERROR -> {
+                    toast(it.message!!)
+                }
+                Resource.Status.ERROR -> {
+                    toast(it.message!!)
+                }
             }
         })
     }
 
-    private fun popularMovieModelClicked(movieModel: Movie, imageView: View){
+    private fun popularMovieModelClicked(movieModel: Movie, imageView: View) {
         startSimilarMoviesActivity(movieModel, imageView)
     }
-    private fun startSimilarMoviesActivity(movieModel: Movie, imageView: View){
-//        val intent = Intent(this, SimilarMoviesActivity::class.java)
-//        intent.putExtra(POPULAR_MOVIE_MODEL_KEY, movieModel)
-//        val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imageView, resources.getString(R.string.img_transition_name)).toBundle()
-//        startActivity(intent, bundle)
+
+    private fun startSimilarMoviesActivity(movieModel: Movie, imageView: View) {
+        val intent = Intent(this, SimilarMoviesActivity::class.java)
+        intent.putExtra(POPULAR_MOVIE_MODEL_KEY, movieModel)
+        val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this, imageView, resources.getString(
+                R.string.img_transition_name
+            )
+        ).toBundle()
+        startActivity(intent, bundle)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        KeyboardHelper.hideKeyboard(this,binding.filterEditText)
-
     }
 }

@@ -3,7 +3,6 @@ package com.example.moviedbapp.ui.similar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.moviedbapp.databinding.SimilarMovieOneItemBinding
 import com.example.moviedbapp.domain.model.Movie
 import com.example.moviedbapp.load
@@ -27,7 +26,7 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.SimilarMo
 
     inner class SimilarMovieHolder(private val oneItemBinding: SimilarMovieOneItemBinding): RecyclerView.ViewHolder(oneItemBinding.root){
         fun setData(movieModel: Movie){
-            oneItemBinding.similarMovieImg.load(movieModel.image!!, corner = 0)
+            oneItemBinding.similarMovieImg.load(movieModel.image, corner = 1)
             oneItemBinding.similarMovieName.text = movieModel.name
         }
     }

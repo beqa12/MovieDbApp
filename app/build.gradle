@@ -73,4 +73,7 @@ dependencies {
     def koin = "2.0.1"
     implementation "org.koin:koin-android:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
+
+    def paging = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging"
 }
