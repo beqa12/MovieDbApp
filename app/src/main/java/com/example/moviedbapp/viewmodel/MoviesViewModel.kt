@@ -20,13 +20,16 @@ class MoviesViewModel(private val baseUseCase: BaseUseCase) : BaseViewModel() {
     val similarMovies: LiveData<Resource<List<Movie>>> get() = _similarMovies
 
     fun getPopularMovies(page: Int) {
+        showLoader()
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = baseUseCase.popularMoviesUseCase.execute(page)
                 withContext(Dispatchers.Main) {
+                    hideLoader()
                     _popularMovies.value = Resource(Resource.Status.SUCCESS, response, "Success")
                 }
             } catch (e: Exception) {
+                hideLoader()
                 handleError(e, _popularMovies)
             }
         }

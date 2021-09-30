@@ -10,13 +10,11 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviedbapp.R
+import com.example.moviedbapp.*
 import com.example.moviedbapp.animations.AnimationsUtils
 import com.example.moviedbapp.databinding.ActivityMainBinding
 import com.example.moviedbapp.domain.model.Movie
-import com.example.moviedbapp.focusChangeAnimation
 import com.example.moviedbapp.network.model.Resource
-import com.example.moviedbapp.toast
 import com.example.moviedbapp.ui.similar.SimilarMoviesActivity
 import com.example.moviedbapp.utils.KeyboardHelper
 import com.example.moviedbapp.utils.POPULAR_MOVIE_MODEL_KEY
@@ -111,6 +109,14 @@ class PopularMoviesActivity : AppCompatActivity() {
                 Resource.Status.ERROR -> {
                     toast(it.message!!)
                 }
+            }
+        })
+
+        moviesViewModel.progressBar.observe(this, { showLoader ->
+            if (showLoader){
+                binding.progressBar.show()
+            }else{
+                binding.progressBar.gone()
             }
         })
     }

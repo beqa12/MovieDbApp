@@ -8,7 +8,6 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class NoInternetInterceptor(private val context: Context): Interceptor {
-    private var appContext = context.applicationContext
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!isNetworkAvailable()){
             throw NoInternetException("Make sure you have internet")
@@ -19,7 +18,7 @@ class NoInternetInterceptor(private val context: Context): Interceptor {
 
     private fun isNetworkAvailable(): Boolean{
         var result = false
-        val connectivityManager = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val capabilities =
             connectivityManager?.getNetworkCapabilities(connectivityManager.activeNetwork)
         connectivityManager?.let {
@@ -34,9 +33,6 @@ class NoInternetInterceptor(private val context: Context): Interceptor {
                         false
                     }
                 }
-            }
-            if (capabilities != null) {
-
             }
         }
         return result

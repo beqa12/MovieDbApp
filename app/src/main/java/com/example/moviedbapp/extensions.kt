@@ -1,6 +1,7 @@
 package com.example.moviedbapp
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
@@ -18,13 +19,20 @@ fun AppCompatEditText.focusChangeAnimation(backBtn: AppCompatImageView){
     }
 }
 
+fun View.show(){
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone(){
+    this.visibility = View.GONE
+}
+
 fun Context.toast(message: String){
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
 fun AppCompatImageView.load(imageUrl: String?, corner: Int){
     Glide.with(this)
-        .asBitmap()
         .load(IMAGE_BASE_URL + imageUrl)
         .transform(RoundedCorners(corner))
         .into(this)

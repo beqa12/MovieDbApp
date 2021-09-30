@@ -12,6 +12,16 @@ import java.lang.Exception
 
 open class BaseViewModel: ViewModel() {
 
+    var progressBar = MutableLiveData<Boolean>()
+
+    fun showLoader(){
+        progressBar.postValue(true)
+    }
+
+    fun hideLoader(){
+        progressBar.postValue(false)
+    }
+
     suspend fun<T> handleError(error: Exception, data: MutableLiveData<Resource<T>>){
         when(error){
             is NoInternetException -> {
